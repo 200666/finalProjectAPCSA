@@ -1,0 +1,17 @@
+#BlueJ class context
+comment0.target=Board
+comment1.params=args
+comment1.target=void\ main(java.lang.String[])
+comment2.params=
+comment2.target=Board()
+comment3.params=
+comment3.target=void\ checkApple()
+comment4.params=
+comment4.target=void\ move()
+comment5.params=
+comment5.target=void\ checkCollision()
+comment6.params=
+comment6.target=void\ locateFood()
+comment7.params=a
+comment7.target=void\ actionPerformed(java.awt.event.ActionEvent)
+numComments=8

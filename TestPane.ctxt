@@ -1,0 +1,9 @@
+#BlueJ class context
+comment0.target=TestPane
+comment1.params=
+comment1.target=TestPane()
+comment2.params=
+comment2.target=java.awt.Dimension\ getPreferredSize()
+comment3.params=g
+comment3.target=void\ paintComponent(java.awt.Graphics)
+numComments=4
