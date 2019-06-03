@@ -2,6 +2,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
+
 public class RunBoard extends JPanel implements ActionListener {
 
     private final int B_WIDTH = 300;
@@ -9,44 +10,49 @@ public class RunBoard extends JPanel implements ActionListener {
     private final int DOT_SIZE = 10;
     private final int ALL_DOTS = 900;
     private final int RAND_POS = 29;
-    private final int DELAY = 140;
+    private final int DELAY = 100;
 
-    private final int x[] = new int[ALL_DOTS]; //array of all the x coordinates of all the dots
-    private final int y[] = new int[ALL_DOTS]; //array of all the y coordinates of all the dots
+    private final int x[] = new int[ALL_DOTS];
+    private final int y[] = new int[ALL_DOTS];
 
     private int dots;
-    private int food_x; //x coordinate
-    private int food_y; //y coordinate
+    private int apple_x;
+    private int apple_y;
     private int score;
 
     private boolean leftDirection = false;
     private boolean rightDirection = true;
     private boolean upDirection = false;
     private boolean downDirection = false;
+    
     private boolean inGame = true;
 
-    private Timer timer; //part of event class
-    private Image ball; // image class in swing
+    private Timer timer;
+    private Image ball;
     private Image food;
     private Image head;
 
     public RunBoard() {
+        
         initBoard();
-       
     }
     
-    private void initBoard(){
-         TAdapter t = new TAdapter();
-        addKeyListener(t);
-        setBackground(Color.black);
+    private void initBoard() {
+
+        addKeyListener(new TAdapter());
+        Color fontc = new Color(0-100-100); 
+        setBackground(fontc);
         setFocusable(true);
 
         setPreferredSize(new Dimension(B_WIDTH, B_HEIGHT));
         loadImages();
         initGame();
     }
-    private void loadImages() {
 
+    private void loadImages() {
+        //defines images for body head and food 
+        //also changes size of images
+        
         ImageIcon ii = new ImageIcon(getClass().getResource("dotHead.png"));
         head = ii.getImage().getScaledInstance(12, 12,  java.awt.Image.SCALE_SMOOTH);
         ImageIcon nope3 = new ImageIcon(head);
@@ -62,6 +68,7 @@ public class RunBoard extends JPanel implements ActionListener {
         ImageIcon nope = new ImageIcon(food);
         food = nope.getImage();
     }
+    
 
     private void initGame() {
         dots = 3;
@@ -90,7 +97,7 @@ public class RunBoard extends JPanel implements ActionListener {
         
         if (inGame) {
 
-            g.drawImage(food, food_x, food_y, this);
+            g.drawImage(food, apple_x, apple_y, this);
 
             for (int z = 0; z < dots; z++) {
                 if (z == 0) {
@@ -98,7 +105,6 @@ public class RunBoard extends JPanel implements ActionListener {
                 } else {
                     g.drawImage(ball, x[z], y[z], this);
                 }
-                
             }
             
             Toolkit.getDefaultToolkit().sync();
@@ -113,35 +119,24 @@ public class RunBoard extends JPanel implements ActionListener {
         // displayed when the snake goes out of bounds
         // 
         String msg = "Game Over";
-        Font small = new Font("Helvetica", Font.BOLD, 14);
+        Font small = new Font("Superclarendon", Font.BOLD, 14);
         FontMetrics metr = getFontMetrics(small);
 
-        g.setColor(Color.white);
+        g.setColor(Color.GREEN);
         g.setFont(small);
         g.drawString(msg, (B_WIDTH - metr.stringWidth(msg)) / 2, B_HEIGHT / 2);
-
-        g.drawString("Start Again? press m", 50, 50);
+        
         g.drawString("Your score was:" + score, 70, 70);
 
          } 
-    
 
-    private void checkFood() {
+    private void checkApple() {
 
-        if ((x[0] == food_x) && (y[0] == food_y)) {
+        if ((x[0] == apple_x) && (y[0] == apple_y)) {
+            score++;
             dots++;
             locateFood();
-            score++;
         }
-    }
-    
-    private void locateFood() {
-
-        int r = (int) (Math.random() * RAND_POS);
-        food_x = ((r * DOT_SIZE));
-
-        r = (int) (Math.random() * RAND_POS);
-        food_y = ((r * DOT_SIZE));
     }
 
     private void move() {
@@ -198,18 +193,26 @@ public class RunBoard extends JPanel implements ActionListener {
         }
     }
 
+     private void locateFood() { 
+        //sets new coordinates for food
+        int r = (int) (Math.random() * RAND_POS);
+        apple_x = ((r * DOT_SIZE));
+
+        r = (int) (Math.random() * RAND_POS);
+        apple_y = ((r * DOT_SIZE));
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
 
         if (inGame) {
-
-            checkFood();
+            checkApple();
             checkCollision();
             move();
         }
-
         repaint();
     }
+
     private class TAdapter extends KeyAdapter {
 
         @Override
@@ -241,14 +244,7 @@ public class RunBoard extends JPanel implements ActionListener {
                 leftDirection = false;
             }
             
-            if ((key == KeyEvent.VK_ENTER)) {
-                inGame = true;
-                
-                RunBoard r = new RunBoard();
-                r.initBoard();
-            }
         }
     }
     
 }
-
